@@ -8,60 +8,46 @@ using namespace geode::prelude;
 std::string rutaCarpetaMusica = "";
 
 
+
+
 std::string obtenerRutaCarpetaMusica() {
     std::string rutaBase;
     
     #if defined(GEODE_IS_ANDROID)
-        
-        
-           
-            rutasBase.push_back(geode::dirs::getSaveDir().string());
-    rutasBase.push_back("/data/data/com.robtopx.geometryjump/files/");
-        
+        // ✅ Para Android usamos el directorio de Geode (esto es un string, no un vector)
+        rutaBase = geode::dirs::getSaveDir().string() + "/";
         
     #elif defined(GEODE_IS_IOS)
-        
         rutaBase = "/var/mobile/Containers/Data/Application/GeometryDash/Documents/";
         
     #elif defined(GEODE_IS_WINDOWS)
-        
         const char* userProfile = getenv("USERPROFILE");
         if (userProfile) {
             rutaBase = std::string(userProfile) + "\\Documents\\";
         } else {
-            // Fallback
             rutaBase = "C:\\Users\\Default\\Documents\\";
         }
         
     #elif defined(GEODE_IS_MACOS)
-        // macOS: ~/Documents (Case Sensitive)
         const char* home = getenv("HOME");
         if (home) {
-            // Verificar si está usando iCloud
             std::string iCloudPath = std::string(home) + "/Library/Mobile Documents/com~apple~CloudDocs/Documents/";
             if (std::filesystem::exists(iCloudPath)) {
                 rutaBase = iCloudPath;
             } else {
-                // Ruta estándar de macOS
                 rutaBase = std::string(home) + "/Documents/";
             }
         } else {
             rutaBase = "/Users/Shared/Documents/";
         }
         
-    #else
-        // LINUX: ~/Música (o ~/Music si no existe)
+    #else // LINUX
         const char* home = getenv("HOME");
         if (home) {
-            // Intentar con "Música" (español)
             rutaBase = std::string(home) + "/Música/";
-            
-            // Si no existe, intentar con "Music" (inglés)
             if (!std::filesystem::exists(rutaBase)) {
                 rutaBase = std::string(home) + "/Music/";
             }
-            
-            // Si ninguna existe, crear en Música (español)
             std::error_code ec;
             std::filesystem::create_directories(rutaBase, ec);
         } else {
@@ -74,6 +60,10 @@ std::string obtenerRutaCarpetaMusica() {
     
     return rutaCompleta;
 }
+
+
+
+
 
 // Función para asegurar que la carpeta existe
 bool crearCarpetaSiNoExiste(const std::string& ruta) {
