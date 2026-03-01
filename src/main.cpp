@@ -13,7 +13,13 @@ std::string obtenerRutaCarpetaMusica() {
     
     #if defined(GEODE_IS_ANDROID)
         
-        rutaBase = geode::dirs::getModDataDir().string() + "/";
+        auto androidPath = file::getAndroidExternalFilesDir();
+        if (androidPath) {
+            rutaBase = androidPath->string() + "/";
+        } else {
+           
+            rutaBase = "/storage/emulated/0/Android/data/com.robtop.geometryjazz/files/";
+        }
         
     #elif defined(GEODE_IS_IOS)
         
@@ -91,32 +97,47 @@ class $modify(MyLevelInfoLayer, LevelInfoLayer) {
     bool init(GJGameLevel* level, bool p1) {
         if (!LevelInfoLayer::init(level, p1)) return false;
 
-        // Botón de guardar (azul)
-        auto miBoton = CCMenuItemSpriteExtra::create(
-            CCSprite::createWithSpriteFrameName("GJ_downloadBtn_001.png"),
-            this,
-            menu_selector(MyLevelInfoLayer::alTocarGuardar)
-        );
-
         // Configurar la carpeta automáticamente al iniciar
         if (rutaCarpetaMusica.empty()) {
             rutaCarpetaMusica = obtenerRutaCarpetaMusica();
             crearCarpetaSiNoExiste(rutaCarpetaMusica);
-            
-            log::info("Carpeta configurada automáticamente: {}", rutaCarpetaMusica);
         }
 
+        // 1. Crear el diseño de tu botón
+        auto spriteBoton = CCSprite::create("boton_knotasu.png"_spr);
+        
+        // 👉 AQUÍ LE CAMBIAS EL TAMAÑO AL BOTÓN 👈
+        // 1.0f es normal. 0.8f es más pequeño. 1.2f es más grande.
+        spriteBoton->setScale(0.3f); 
+        
+        // 2. Crear el botón interactivo
+        auto miBoton = CCMenuItemSpriteExtra::create(
+            spriteBoton,
+            this,
+            menu_selector(MyLevelInfoLayer::alTocarGuardar)
+        );
+
+        // 3. Crear el menú que contendrá el botón
         auto miMenu = CCMenu::create();
-        miMenu->setPosition({0, 0});
-        addChild(miMenu);
+        
+        // 4. ANCLAR EL BOTÓN (Para que se quede quieto)
+        auto winSize = CCDirector::get()->getWinSize(); 
+        
+        // 👉 AQUÍ CAMBIAS LA POSICIÓN DEL BOTÓN 👈
+        // Cambia el "40" de la izquierda para moverlo a los lados.
+        // Cambia el "40" de la derecha para moverlo arriba/abajo.
+        miMenu->setPosition({winSize.width - 40, 40}); 
+        
+        miBoton->setPosition({0, 0}); // (Este déjalo así en 0, 0)
 
         miMenu->addChild(miBoton);
-
-        // Posición del botón
-        miBoton->setPosition({360, 25});
+        addChild(miMenu);
 
         return true;
     }
+    
+   
+
 
     void alTocarGuardar(CCObject*) {
         // Verificar que la carpeta existe
