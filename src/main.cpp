@@ -13,13 +13,10 @@ std::string obtenerRutaCarpetaMusica() {
     
     #if defined(GEODE_IS_ANDROID)
         
-        auto androidPath = file::getAndroidExternalFilesDir();
-        if (androidPath) {
-            rutaBase = androidPath->string() + "/";
-        } else {
+        
            
             rutaBase = "/storage/emulated/0/Android/data/com.robtop.geometryjazz/files/";
-        }
+        
         
     #elif defined(GEODE_IS_IOS)
         
