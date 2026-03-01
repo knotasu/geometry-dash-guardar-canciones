@@ -1,0 +1,39 @@
+name: Compilar Mod de Knotasu
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - name: Android 64-bit
+          os: ubuntu-latest
+          target: Android64
+        - name: Android 32-bit
+          os: ubuntu-latest
+          target: Android32
+
+    name: Compilando ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+
+    steps:
+      - name: Descargar tu código
+        uses: actions/checkout@v4
+
+      - name: Compilar con Geode
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          bindings-resolve-all: true
+          target: ${{ matrix.config.target }}
+
+      - name: Subir archivo .geode final
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mod-Knotasu-${{ matrix.config.target }}
+          path: ${{ github.workspace }}/build/*/*.geode
