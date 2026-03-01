@@ -15,7 +15,7 @@ std::string obtenerRutaCarpetaMusica() {
         
         
            
-            rutaBase = "/storage/emulated/0/Android/data/com.robtop.geometryjazz/files/";
+            rutaBase = geode::dirs::getModDataDir().string() + "/";
         
         
     #elif defined(GEODE_IS_IOS)
@@ -123,7 +123,7 @@ class $modify(MyLevelInfoLayer, LevelInfoLayer) {
         // 👉 AQUÍ CAMBIAS LA POSICIÓN DEL BOTÓN 👈
         // Cambia el "40" de la izquierda para moverlo a los lados.
         // Cambia el "40" de la derecha para moverlo arriba/abajo.
-        miMenu->setPosition({winSize.width - 40, 40}); 
+        miMenu->setPosition({winSize.width - 120, 40}); 
         
         miBoton->setPosition({0, 0}); // (Este déjalo así en 0, 0)
 
