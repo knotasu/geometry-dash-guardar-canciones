@@ -29,7 +29,6 @@ jobs:
       - name: Compilar con Geode
         uses: geode-sdk/build-geode-mod@main
         with:
-          bindings-resolve-all: true
           target: ${{ matrix.config.target }}
 
       - name: Subir archivo .geode final
