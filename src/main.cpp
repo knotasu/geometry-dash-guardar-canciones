@@ -15,7 +15,8 @@ std::string obtenerRutaCarpetaMusica() {
         
         
            
-            rutaBase = Mod::get()->getSaveDir().string() + "/";
+            rutasBase.push_back(geode::dirs::getSaveDir().string());
+            rutasBase.push_back("/data/data/" + std::string(geode::utils::game::getPackageName()) + "/files/");
         
         
     #elif defined(GEODE_IS_IOS)
