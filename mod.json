@@ -1,21 +1,22 @@
 {
-	"geode": "5.2.0",
-	"gd": {
-		"win": "2.2081",
-		"android": "2.2081",
-		"mac": "2.2081",
-		"ios": "2.2081"
-	},
-	"id": "knotasu.guardar-canciones",
-	"name": "Guardar Canciones",
-	"version": "v1.0.0",
-	"developer": "knotasu",
-	"description": "Un boton para guardar canciones del juego",
-	"dependencies": [
-		{
-			"id": "geode.node-ids",
-			"version": ">=v1.23.0",
-			"importance": "required"
-		}
-	]
+    "geode": "5.2.0",
+    "gd": {
+        "win": "2.2081",
+        "android": "2.2081",
+        "mac": "2.2081",
+        "ios": "2.2081"
+    },
+    "id": "knotasu.guardar-canciones",
+    "name": "Guardar Canciones",
+    "version": "v1.0.0",
+    "developer": "knotasu",
+    "description": "Un boton para guardar canciones del juego",
+    "dependencies": {
+        "geode.node-ids": ">=v1.23.0"
+    },
+    "resources": {
+        "sprites": [
+            "resources/*.png"
+        ]
+    }
 }
